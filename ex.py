@@ -55,13 +55,31 @@ sabit_ders_atamasi = {
 }
 
 # -----------------------------
-# 2. EXCEL SAYFALARI
+# 2. DERSLERİN SINIF BİLGİSİ
+# -----------------------------
+sinif_bilgisi = {
+    "1. Sınıf": ["İktisada Giriş", "Genel İşletme", "Muhasebe I", "İnsan Kaynakları Yönetimi", "Örgütsel Davranış", "İşletme Matematiği"],
+    "2. Sınıf": ["Muhasebe II", "Mikro İktisat", "Makro İktisat", "Finansal Yönetim", "Pazarlama Yönetimi", "Üretim Yönetimi", "İş Hukuku"],
+    "3. Sınıf": ["Stratejik Yönetim", "Uluslararası İşletme", "Lojistik Yönetimi", "Yönetim Muhasebesi", "Proje Yönetimi", "Araştırma Yöntemleri", "E-Ticaret", "Kalite Yönetimi", "Girişimcilik", "Karar Analizi", "İş Etiği"],
+    "4. Sınıf": ["Stratejik Pazarlama", "Davranışsal Finans", "Küresel Pazarlama", "İnovasyon Yönetimi", "Müşteri İlişkileri Yönetimi", "Sosyal Medya Pazarlama", "Organizasyon Teorisi", "Kültürel Yönetim", "Risk Yönetimi", "Yönetim Bilişim Sistemleri", "Ücretlendirme Yönetimi", "Kurumlar Hukuku", "Pazar Araştırması", "Satınalma Yönetimi", "Kalite Kontrol Teknikleri", "Perakende Yönetimi"]
+}
+
+ders_sinif_dict = {}
+for sinif, ders_listesi in sinif_bilgisi.items():
+    for ders in ders_listesi:
+        ders_sinif_dict[ders] = sinif
+
+# -----------------------------
+# 3. EXCEL SAYFALARI
 # -----------------------------
 # Öğretim Üyeleri
 df_uyeler = pd.DataFrame({"OgretimUyesi": ogretim_uyeleri})
 
-# Dersler
-df_dersler = pd.DataFrame({"Dersler": dersler})
+# Dersler + Sınıf
+df_dersler = pd.DataFrame({
+    "Dersler": dersler,
+    "Sinif": [ders_sinif_dict[ders] for ders in dersler]
+})
 
 # Derslikler
 df_derslikler = pd.DataFrame({"Derslikler": derslikler})
@@ -70,12 +88,16 @@ df_derslikler = pd.DataFrame({"Derslikler": derslikler})
 data_uyeler_dersler = []
 for uye, ders_listesi in sabit_ders_atamasi.items():
     for ders in ders_listesi:
-        data_uyeler_dersler.append({"OgretimUyesi": uye, "Ders": ders})
+        data_uyeler_dersler.append({
+            "OgretimUyesi": uye,
+            "Ders": ders,
+            "Sinif": ders_sinif_dict[ders]
+        })
 
 df_uyeler_dersler = pd.DataFrame(data_uyeler_dersler)
 
 # -----------------------------
-# 3. EXCEL DOSYASINA YAZ
+# 4. EXCEL DOSYASINA YAZ
 # -----------------------------
 with pd.ExcelWriter("dersler.xlsx") as writer:
     df_uyeler.to_excel(writer, sheet_name="OgretimUyeleri", index=False)

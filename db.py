@@ -1,6 +1,6 @@
 import sqlite3
 import pandas as pd
-import os  # <-- dosya işlemleri için
+import os
 
 # -----------------------------
 # 0. ESKİ VERİTABANINI SİL
@@ -12,7 +12,7 @@ if os.path.exists("okul.db"):
 # -----------------------------
 # 1. VERİTABANI BAĞLANTISI
 # -----------------------------
-conn = sqlite3.connect("okul.db")  # Yeni veritabanı oluşturulacak
+conn = sqlite3.connect("okul.db")
 cursor = conn.cursor()
 
 # Tablolar
@@ -26,7 +26,8 @@ CREATE TABLE IF NOT EXISTS OgretimUyeleri (
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS Dersler (
     ders_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    ders_adi TEXT NOT NULL
+    ders_adi TEXT NOT NULL,
+    sinif TEXT NOT NULL
 )
 """)
 
@@ -41,6 +42,7 @@ cursor.execute("""
 CREATE TABLE IF NOT EXISTS OgretimUyeleriDersler (
     uye_id INTEGER,
     ders_id INTEGER,
+    sinif TEXT NOT NULL,
     FOREIGN KEY (uye_id) REFERENCES OgretimUyeleri(uye_id),
     FOREIGN KEY (ders_id) REFERENCES Dersler(ders_id)
 )
@@ -62,9 +64,12 @@ def veri_ekle(excel_dosyasi="dersler.xlsx"):
     for isim in df_uyeler["OgretimUyesi"]:
         cursor.execute("INSERT INTO OgretimUyeleri (isim) VALUES (?)", (isim,))
 
-    # Dersleri ekle
-    for ders in df_dersler["Dersler"]:
-        cursor.execute("INSERT INTO Dersler (ders_adi) VALUES (?)", (ders,))
+    # Dersleri ekle (sinif ile birlikte)
+    for _, row in df_dersler.iterrows():
+        cursor.execute(
+            "INSERT INTO Dersler (ders_adi, sinif) VALUES (?, ?)",
+            (row["Dersler"], row["Sinif"])
+        )
 
     # Derslikleri ekle
     for dl in df_derslikler["Derslikler"]:
@@ -83,9 +88,10 @@ def veri_ekle(excel_dosyasi="dersler.xlsx"):
     for _, row in df_uyeler_dersler.iterrows():
         uye_id = uye_adi_to_id[row["OgretimUyesi"]]
         ders_id = ders_adi_to_id[row["Ders"]]
+        sinif = row["Sinif"]
         cursor.execute(
-            "INSERT INTO OgretimUyeleriDersler (uye_id, ders_id) VALUES (?, ?)",
-            (uye_id, ders_id)
+            "INSERT INTO OgretimUyeleriDersler (uye_id, ders_id, sinif) VALUES (?, ?, ?)",
+            (uye_id, ders_id, sinif)
         )
 
     conn.commit()
