@@ -35,7 +35,7 @@ dersler_listesi = list({d for dl in ogretmen_dersler.values() for d in dl})
 # =============================
 # 2. EXCEL KISIT FORMUNU OKU
 # =============================
-kisitler = pd.read_excel("kisit_formu.xlsx", sheet_name=None)
+kisitler = pd.read_excel("ders_programi_kisit_formu.xlsx", sheet_name=None)
 df_uygunluk = kisitler["Ogretmen_Uygunluk"]
 df_ders_bilgileri = kisitler["Ders_Bilgileri"]
 

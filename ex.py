@@ -4,66 +4,332 @@ import pandas as pd
 # 1. VERİLER
 # -----------------------------
 ogretim_uyeleri = [
-    "Prof. Dr. Ahmet Yılmaz", "Prof. Dr. Ayşe Demir",
-    "Doç. Dr. Mehmet Kaya", "Doç. Dr. Zeynep Arslan",
-    "Dr. Ahmet Şahin", "Dr. Cem Yıldız", "Dr. Deniz Koç",
-    "Öğr. Gör. Hasan Tunç", "Öğr. Gör. Elif Öz", "Dr. Sibel Uslu",
-    "Dr. Bora Koç", "Doç. Dr. Levent Ersoy", "Prof. Dr. Zeynep Çelik",
-    "Dr. Ömer Kaplan", "Öğr. Gör. Berna Aydın", "Doç. Dr. Cem Aksoy",
-    "Dr. Ayça Öz", "Dr. Fırat Demir", "Öğr. Gör. Gülhan Işık",
-    "Dr. Murat Polat"
+    "Öğretmen 1",
+    "Öğretmen 2",
+    "Öğretmen 3",
+    "Öğretmen 4",
+    "Öğretmen 5",
+    "Dr. Öğr. Üyesi Miray BAYBARS",
+    "Doç. Dr. Burcu ŞENTÜRK YILDIZ",
+    "Araş. Gör. Dr. Özgür BABACAN",
+    "Prof. Dr. G. Nazan GÜNAY",
+    "Prof. Dr. Burcu ARACIOĞLU",
+    "Doç. Dr. İnanç KABASAKAL",
+    "Prof. Dr. A. Nazlı AYYILDIZ ÜNNÜ",
+    "Dr. Öğr. Üyesi Hakan ERKAL",
+    "Dr. Öğr. Üyesi A. Erhan ZALLUHOĞLU",
+    "Prof. Dr. Dilek DEMİRHAN",
+    "Dr. Öğr. Üyesi Esin GÜRBÜZ",
+    "Prof. Dr. Ayla Özhan DEDEOĞLU",
+    "Doç. Dr. Elif ÜSTÜNDAĞLI ERTEN",
+    "Prof. Dr. Murat KOCAMAZ",
+    "Doç. Dr. Haydar YALÇIN",
+    "Prof. Dr. İpek KAZANÇOĞLU",
+    "Dr. Öğr. Üyesi Ş. Sertaç ÇAKI",
+    "Doç. Dr. Aydın KOÇAK",
+    "Prof. Dr. Haluk SOYUER",
+    "Prof. Dr. Türker SUSMUŞ",
+    "Prof. Dr. Derya İLİC",
+    "Doç. Dr. U. Gökay ÇİÇEKLİ",
+    "Prof. Dr. Burak ÇAPRAZ",
+    "Prof. Dr. Aykan CANDEMİR",
+    "Prof. Dr. Keti VENTURA",
+    "Araş. Gör. Dr. Begüm KANAT TİRYAKİ",
+    "Dr. Öğr. Üyesi Sema AYDIN"
 ]
+
 
 dersler = [
-    "İktisada Giriş", "Genel İşletme", "Muhasebe I", "Muhasebe II",
-    "Mikro İktisat", "Makro İktisat", "Finansal Yönetim", "Pazarlama Yönetimi",
-    "İnsan Kaynakları Yönetimi", "Stratejik Yönetim", "Uluslararası İşletme",
-    "Üretim Yönetimi", "Örgütsel Davranış", "İş Hukuku", "Girişimcilik",
-    "Araştırma Yöntemleri", "E-Ticaret", "Proje Yönetimi", "Lojistik Yönetimi",
-    "Kalite Yönetimi", "Yönetim Muhasebesi", "Satınalma Yönetimi",
-    "Davranışsal Finans", "Küresel Pazarlama", "İş Etiği", "Risk Yönetimi",
-    "Karar Analizi", "Perakende Yönetimi", "Müşteri İlişkileri Yönetimi",
-    "İnovasyon Yönetimi", "İşletme Matematiği", "Organizasyon Teorisi",
-    "Kültürel Yönetim", "Stratejik Pazarlama", "Yönetim Bilişim Sistemleri",
-    "Sosyal Medya Pazarlama", "Ücretlendirme Yönetimi", "Kurumlar Hukuku",
-    "Pazar Araştırması", "Kalite Kontrol Teknikleri"
+    "Matematik-I (Tek)",
+    "Matematik-I (Çift)",
+    "Business",
+    "Sosyoloji",
+    "Introduction to Microeconomics",
+    "Kariyer Planlama",
+    "Türk Dili I",
+    "Atatürk İlkeleri ve İnkılap Tarihi I",
+    "Muhasebe I",
+    "Marketing Management I",
+    "Operations Management I",
+    "İstatistik I",
+    "Organizational Behavior (Tek)",
+    "Organizational Behavior (Çift)",
+    "Araştırma Yöntemleri (Çift)",
+    "Araştırma Yöntemleri (Tek)",
+    "Financial Management I",
+    "İşletme Hukuku",
+    "Consumer Behavior (Tek)",
+    "Consumer Behavior (Çift)",
+    "Operations Research I",
+    "Girişimcilik ve KOBİ Yönetimi",
+    "Enformetri",
+    "Sürdürülebilir Pazarlama",
+    "Yönetim Muhasebesi",
+    "Reklamcılık Yönetimi",
+    "E-İş ve Kurumsal Kaynak Planlama",
+    "Teknoloji ve Sanayi Dinamikleri",
+    "Uygulamalı Finansal Piyasa İşlemleri",
+    "Küresel Tedarik Zinciri ve Lojistik",
+    "Bilgi Yönetimi",
+    "Yatırım Yönetimi",
+    "Management Consultancy",
+    "Yönetim Geliştirme",
+    "Borçlar Hukuku",
+    "System Analysis and Design",
+    "Human Resources Management",
+    "Global Marketing (Tek)",
+    "Global Marketing (Çift)",
+    "Mali Tablolar Analizi",
+    "Vestel İşletmecilik Seminerleri I",
+    "Retailing I",
+    "Muhasebe I (Örgün + İ.Ö.)",
+    "Muhasebe II (Tasfiye)",
+    "Uygulamalı Finansal Piyasa İşlemleri (Örgün)",
+    "Business I (Tasfiye)",
+    "Introduction to Business (Örgün + İ.Ö)",
+    "Hukukun Temel Kavramları (Örgün + İ.Ö.)",
+    "Ticaret Hukuku (Tasfiye)",
+    "İşletmeye Giriş"
 ]
 
-derslikler = [f"Derslik {i}" for i in range(1, 25)]
 
-sabit_ders_atamasi = {
-    "Prof. Dr. Ahmet Yılmaz": ["İktisada Giriş", "Pazarlama Yönetimi"],
-    "Prof. Dr. Ayşe Demir": ["Mikro İktisat", "Makro İktisat", "İşletme Matematiği"],
-    "Doç. Dr. Mehmet Kaya": ["Muhasebe I", "Muhasebe II", "Finansal Yönetim"],
-    "Doç. Dr. Zeynep Arslan": ["Stratejik Yönetim", "Uluslararası İşletme"],
-    "Dr. Ahmet Şahin": ["Üretim Yönetimi", "Kalite Yönetimi"],
-    "Dr. Cem Yıldız": ["Davranışsal Finans", "Finansal Yönetim"],
-    "Dr. Deniz Koç": ["Pazarlama Yönetimi", "İnovasyon Yönetimi"],
-    "Öğr. Gör. Hasan Tunç": ["Örgütsel Davranış", "İş Hukuku"],
-    "Öğr. Gör. Elif Öz": ["Girişimcilik", "Araştırma Yöntemleri"],
-    "Dr. Sibel Uslu": ["E-Ticaret", "Proje Yönetimi"],
-    "Dr. Bora Koç": ["Lojistik Yönetimi", "Satınalma Yönetimi"],
-    "Doç. Dr. Levent Ersoy": ["Stratejik Pazarlama", "Küresel Pazarlama"],
-    "Prof. Dr. Zeynep Çelik": ["Yönetim Muhasebesi", "Kalite Kontrol Teknikleri"],
-    "Dr. Ömer Kaplan": ["Karar Analizi", "Perakende Yönetimi"],
-    "Öğr. Gör. Berna Aydın": ["Müşteri İlişkileri Yönetimi", "Sosyal Medya Pazarlama"],
-    "Doç. Dr. Cem Aksoy": ["İş Etiği", "Risk Yönetimi"],
-    "Dr. Ayça Öz": ["Organizasyon Teorisi", "Kültürel Yönetim"],
-    "Dr. Fırat Demir": ["Yönetim Bilişim Sistemleri", "Ücretlendirme Yönetimi"],
-    "Öğr. Gör. Gülhan Işık": ["Pazar Araştırması", "Lojistik Yönetimi"],
-    "Dr. Murat Polat": ["E-Ticaret", "İnovasyon Yönetimi"]
+derslikler = [
+    "Derslik 101",
+    "Derslik 102",
+    "Derslik 103",
+    "Derslik 104",
+    "Derslik 105",
+    "Derslik 108",
+    "Derslik 109",
+    "Derslik 110",
+    "Derslik 111",
+    "Derslik 201",
+    "Derslik 202",
+    "Derslik 203",
+    "Derslik 204",
+    "Derslik 205",
+    "Derslik 208",
+    "Derslik 209",
+    "Derslik 210",
+    "Derslik 211",
+    "Derslik 301",
+    "Derslik 302",
+    "Derslik 303"
+]
+
+
+kontenjan_bilgisi = {
+    "Derslik 101": 32,
+    "Derslik 102": 49,
+    "Derslik 103": 20,
+    "Derslik 104": 48,
+    "Derslik 105": 49,
+    "Derslik 108": 49,
+    "Derslik 109": 20,
+    "Derslik 110": 20,
+    "Derslik 111": 20,
+    "Derslik 201": 30,
+    "Derslik 202": 49,
+    "Derslik 203": 20,
+    "Derslik 204": 48,
+    "Derslik 205": 49,
+    "Derslik 208": 49,
+    "Derslik 209": 20,
+    "Derslik 210": 20,
+    "Derslik 211": 20,
+    "Derslik 301": 41,
+    "Derslik 302": 36,
+    "Derslik 303": 64
 }
+
+
+# Derslerin sınıf bilgisi
+sinif_bilgisi = {
+    "1. Sınıf": [
+        "Matematik-I (Tek)",
+        "Matematik-I (Çift)",
+        "Business",
+        "Sosyoloji",
+        "Introduction to Microeconomics",
+        "Kariyer Planlama",
+        "Türk Dili I",
+        "Atatürk İlkeleri ve İnkılap Tarihi I"
+    ],
+    "2. Sınıf": [
+        "Muhasebe I",
+        "Marketing Management I",
+        "Operations Management I",
+        "İstatistik I",
+        "Organizational Behavior (Tek)",
+        "Organizational Behavior (Çift)"
+    ],
+    "3. Sınıf": [
+        "Araştırma Yöntemleri (Çift)",
+        "Araştırma Yöntemleri (Tek)",
+        "Financial Management I",
+        "İşletme Hukuku",
+        "Consumer Behavior (Tek)",
+        "Consumer Behavior (Çift)",
+        "Operations Research I",
+        "Girişimcilik ve KOBİ Yönetimi",
+        "Enformetri",
+        "Sürdürülebilir Pazarlama",
+        "Yönetim Muhasebesi",
+        "Reklamcılık Yönetimi",
+        "E-İş ve Kurumsal Kaynak Planlama",
+        "Teknoloji ve Sanayi Dinamikleri",
+        "Uygulamalı Finansal Piyasa İşlemleri",
+        "Küresel Tedarik Zinciri ve Lojistik",
+        "Bilgi Yönetimi",
+        "Yatırım Yönetimi",
+        "Management Consultancy",
+        "Yönetim Geliştirme",
+        "Borçlar Hukuku"
+    ],
+    "4. Sınıf": [
+        "System Analysis and Design",
+        "Human Resources Management",
+        "Global Marketing (Tek)",
+        "Global Marketing (Çift)",
+        "Mali Tablolar Analizi",
+        "Vestel İşletmecilik Seminerleri I",
+        "Retailing I"
+    ],
+    "0. Sınıf": [
+        "Muhasebe I (Örgün + İ.Ö.)",
+        "Muhasebe II (Tasfiye)",
+        "Uygulamalı Finansal Piyasa İşlemleri (Örgün)",
+        "Business I (Tasfiye)",
+        "Introduction to Business (Örgün + İ.Ö)",
+        "Hukukun Temel Kavramları (Örgün + İ.Ö.)",
+        "Ticaret Hukuku (Tasfiye)",
+        "İşletmeye Giriş"
+    ]
+}
+
+
+# Sabit ders atamaları
+sabit_ders_atamasi = {
+    "ÖĞRETMEN 1": [
+        "Matematik-I (Tek)"
+    ],
+    "ÖĞRETMEN 2": [
+        "Matematik-I (Çift)"
+    ],
+    "Dr. Öğr. Üyesi Miray BAYBARS": [
+        "Business",
+        "Kariyer Planlama",
+        "Retailing I"
+    ],
+    "Doç. Dr. Burcu ŞENTÜRK YILDIZ": [
+        "Sosyoloji"
+    ],
+    "ÖĞRETMEN 3": [
+        "Introduction to Microeconomics"
+    ],
+    "ÖĞRETMEN 4": [
+        "Türk Dili I"
+    ],
+    "ÖĞRETMEN 5": [
+        "Atatürk İlkeleri ve İnkılap Tarihi I"
+    ],
+    "Araş. Gör. Dr. Özgür BABACAN": [
+        "Muhasebe I",
+        "Yatırım Yönetimi",
+        "İşletmeye Giriş"
+    ],
+    "Prof. Dr. G. Nazan GÜNAY": [
+        "Marketing Management I",
+        "Vestel İşletmecilik Seminerleri I"
+    ],
+    "Prof. Dr. Burcu ARACIOĞLU": [
+        "Operations Management I",
+        "Küresel Tedarik Zinciri ve Lojistik"
+    ],
+    "Doç. Dr. İnanç KABASAKAL": [
+        "İstatistik I",
+        "Bilgi Yönetimi"
+    ],
+    "Prof. Dr. A. Nazlı AYYILDIZ ÜNNÜ": [
+        "Organizational Behavior (Tek)"
+    ],
+    "Dr. Öğr. Üyesi Hakan ERKAL": [
+        "Organizational Behavior (Çift)"
+    ],
+    "Dr. Öğr. Üyesi A. Erhan ZALLUHOĞLU": [
+        "Araştırma Yöntemleri (Çift)",
+        "Araştırma Yöntemleri (Tek)",
+        "Girişimcilik ve KOBİ Yönetimi"
+    ],
+    "Prof. Dr. Dilek DEMİRHAN": [
+        "Financial Management I"
+    ],
+    "Dr. Öğr. Üyesi Esin GÜRBÜZ": [
+        "İşletme Hukuku",
+        "Borçlar Hukuku"
+    ],
+    "Prof. Dr. Ayla Özhan DEDEOĞLU": [
+        "Consumer Behavior (Tek)"
+    ],
+    "Doç. Dr. Elif ÜSTÜNDAĞLI ERTEN": [
+        "Consumer Behavior (Çift)",
+        "Reklamcılık Yönetimi"
+    ],
+    "Prof. Dr. Murat KOCAMAZ": [
+        "Operations Research I"
+    ],
+    "Doç. Dr. Haydar YALÇIN": [
+        "Enformetri"
+    ],
+    "Prof. Dr. İpek KAZANÇOĞLU": [
+        "Sürdürülebilir Pazarlama"
+    ],
+    "Dr. Öğr. Üyesi Ş. Sertaç ÇAKI": [
+        "Yönetim Muhasebesi",
+        "Mali Tablolar Analizi"
+    ],
+    "Doç. Dr. Aydın KOÇAK": [
+        "E-İş ve Kurumsal Kaynak Planlama"
+    ],
+    "Prof. Dr. Haluk SOYUER": [
+        "Teknoloji ve Sanayi Dinamikleri"
+    ],
+    "Prof. Dr. Türker SUSMUŞ": [
+        "Uygulamalı Finansal Piyasa İşlemleri",
+        "Muhasebe I (Örgün + İ.Ö.)",
+        "Muhasebe II (Tasfiye)",
+        "Uygulamalı Finansal Piyasa İşlemleri (Örgün)"
+    ],
+    "Prof. Dr. Derya İLİC": [
+        "Management Consultancy",
+        "Yönetim Geliştirme"
+    ],
+    "Doç. Dr. U. Gökay ÇİÇEKLİ": [
+        "System Analysis and Design"
+    ],
+    "Prof. Dr. Burak ÇAPRAZ": [
+        "Human Resources Management"
+    ],
+    "Prof. Dr. Aykan CANDEMİR": [
+        "Global Marketing (Tek)"
+    ],
+    "Prof. Dr. Keti VENTURA": [
+        "Global Marketing (Çift)"
+    ],
+    "Araş. Gör. Dr. Begüm KANAT TİRYAKİ": [
+        "Business I (Tasfiye)",
+        "Introduction to Business (Örgün + İ.Ö)"
+    ],
+    "Dr. Öğr. Üyesi Sema AYDIN": [
+        "Hukukun Temel Kavramları (Örgün + İ.Ö.)",
+        "Ticaret Hukuku (Tasfiye)"
+    ]
+}
+
 
 # -----------------------------
 # 2. DERSLERİN SINIF BİLGİSİ
 # -----------------------------
-sinif_bilgisi = {
-    "1. Sınıf": ["İktisada Giriş", "Genel İşletme", "Muhasebe I", "İnsan Kaynakları Yönetimi", "Örgütsel Davranış", "İşletme Matematiği"],
-    "2. Sınıf": ["Muhasebe II", "Mikro İktisat", "Makro İktisat", "Finansal Yönetim", "Pazarlama Yönetimi", "Üretim Yönetimi", "İş Hukuku"],
-    "3. Sınıf": ["Stratejik Yönetim", "Uluslararası İşletme", "Lojistik Yönetimi", "Yönetim Muhasebesi", "Proje Yönetimi", "Araştırma Yöntemleri", "E-Ticaret", "Kalite Yönetimi", "Girişimcilik", "Karar Analizi", "İş Etiği"],
-    "4. Sınıf": ["Stratejik Pazarlama", "Davranışsal Finans", "Küresel Pazarlama", "İnovasyon Yönetimi", "Müşteri İlişkileri Yönetimi", "Sosyal Medya Pazarlama", "Organizasyon Teorisi", "Kültürel Yönetim", "Risk Yönetimi", "Yönetim Bilişim Sistemleri", "Ücretlendirme Yönetimi", "Kurumlar Hukuku", "Pazar Araştırması", "Satınalma Yönetimi", "Kalite Kontrol Teknikleri", "Perakende Yönetimi"]
-}
-
 ders_sinif_dict = {}
 for sinif, ders_listesi in sinif_bilgisi.items():
     for ders in ders_listesi:
@@ -72,26 +338,23 @@ for sinif, ders_listesi in sinif_bilgisi.items():
 # -----------------------------
 # 3. EXCEL SAYFALARI
 # -----------------------------
-# Öğretim Üyeleri
 df_uyeler = pd.DataFrame({"OgretimUyesi": ogretim_uyeleri})
-
-# Dersler + Sınıf
 df_dersler = pd.DataFrame({
     "Dersler": dersler,
-    "Sinif": [ders_sinif_dict[ders] for ders in dersler]
+    "Sinif": [ders_sinif_dict.get(ders, "Bilinmiyor") for ders in dersler]
+})
+df_derslikler = pd.DataFrame({
+    "Derslikler": derslikler,
+    "Kontenjan": [kontenjan_bilgisi.get(derslik, "Bilinmiyor") for derslik in derslikler]
 })
 
-# Derslikler
-df_derslikler = pd.DataFrame({"Derslikler": derslikler})
-
-# OgretimUyeleriDersler
 data_uyeler_dersler = []
 for uye, ders_listesi in sabit_ders_atamasi.items():
     for ders in ders_listesi:
         data_uyeler_dersler.append({
             "OgretimUyesi": uye,
             "Ders": ders,
-            "Sinif": ders_sinif_dict[ders]
+            "Sinif": ders_sinif_dict.get(ders, "Bilinmiyor")
         })
 
 df_uyeler_dersler = pd.DataFrame(data_uyeler_dersler)
