@@ -20,9 +20,12 @@ JOIN Dersler ON Dersler.ders_id = OgretimUyeleriDersler.ders_id
 ders_info = {}
 ders_ogretmen = {}
 
+# DEĞİŞİKLİK: Her satırı (Ders + Sınıf) bağımsız bir birim olarak kaydediyoruz
 for ogretmen, ders, sinif in cursor.fetchall():
-    ders_ogretmen[ders] = ogretmen
-    ders_info[ders] = {
+    uni_key = f"{ders} ({sinif})"
+    ders_ogretmen[uni_key] = ogretmen
+    ders_info[uni_key] = {
+        "ders_adi": ders,  # Eşleşme kontrolü için orijinal adı saklıyoruz
         "siniflar": [s.strip() for s in str(sinif).split(",")],
         "gun_yasaklari": []
     }
@@ -47,12 +50,14 @@ gunler = ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma"]
 gunluk_saat = len(saatler)
 
 for _, r in df_ders_bilgileri.iterrows():
-    d = r["Ders"]
-    if d in ders_info:
-        ders_info[d]["gun_yasaklari"] = [
-            g for g in gunler
-            if r.get(f"{g}_Olamaz (1=Evet, 0=Hayır)", 0) == 1
-        ]
+    d_adi = r["Ders"]
+    # DEĞİŞİKLİK: Bu ders adına sahip tüm sınıf gruplarına kısıtı yayıyoruz
+    for uni_key in ders_info:
+        if ders_info[uni_key]["ders_adi"] == d_adi:
+            ders_info[uni_key]["gun_yasaklari"] = [
+                g for g in gunler
+                if r.get(f"{g}_Olamaz (1=Evet, 0=Hayır)", 0) == 1
+            ]
 
 # ==============================
 # 3. PROGRAM YAPILARI
@@ -87,40 +92,44 @@ for _, row in tercih_df.iterrows():
             if bas <= int(s.split(":")[0]) < bit
         ]
 
-        dersler = [d.strip() for d in str(row[col]).split(",")]
+        # Tercih dosyasındaki ders isimlerini alıyoruz
+        tercih_edilen_adlar = [d.strip() for d in str(row[col]).split(",")]
 
-        for ders in dersler:
-            if ders not in ders_ogretmen:
-                raise RuntimeError(f"❌ Tercih ders DB'de yok: {ders}")
+        for t_ad in tercih_edilen_adlar:
+            # DEĞİŞİKLİK: Bu isme ait tüm bağımsız sınıf gruplarını buluyoruz
+            ilgili_birimler = [k for k, v in ders_info.items() if v["ders_adi"] == t_ad]
 
-            ogretmen = ders_ogretmen[ders]
-            siniflar = ders_info[ders]["siniflar"]
+            if not ilgili_birimler:
+                raise RuntimeError(f"❌ Tercih ders DB'de yok: {t_ad}")
 
-            placed = False
-            for dl in derslikler:
-                if all(
-                    dl not in program[gun][s] and
-                    ogretmen not in ogretmen_prog[gun][s] and
-                    uygunluk.get((ogretmen, gun, saatler[s]), 1) != 0 and
-                    all(sf not in sinif_prog[gun][s] for sf in siniflar)
-                    for s in saat_idx
-                ):
-                    for s in saat_idx:
-                        program[gun][s][dl] = f"{ders} ({', '.join(siniflar)}, {ogretmen})"
-                        ogretmen_prog[gun][s].add(ogretmen)
-                        sinif_prog[gun][s].update(siniflar)
-                        saat_yuku[gun][s] += 1
-                    gun_yuku[gun] += 1
-                    yerlesen_dersler.add(ders)
-                    placed = True
-                    break
+            for uni_key in ilgili_birimler:
+                ogretmen = ders_ogretmen[uni_key]
+                siniflar = ders_info[uni_key]["siniflar"]
 
-            if not placed:
-                raise RuntimeError(
-                    f"❌ Tercih verisi tutarsız:\n"
-                    f"Ders: {ders}\nGün: {gun}\nSaat: {col}\n"
-                    f"(Muhtemel neden: hoca uygunluk formu)"
-                )
+                placed = False
+                for dl in derslikler:
+                    if all(
+                            dl not in program[gun][s] and
+                            ogretmen not in ogretmen_prog[gun][s] and
+                            uygunluk.get((ogretmen, gun, saatler[s]), 1) != 0 and
+                            all(sf not in sinif_prog[gun][s] for sf in siniflar)
+                            for s in saat_idx
+                    ):
+                        for s in saat_idx:
+                            program[gun][s][dl] = f"{uni_key} - {ogretmen}"
+                            ogretmen_prog[gun][s].add(ogretmen)
+                            sinif_prog[gun][s].update(siniflar)
+                            saat_yuku[gun][s] += 1
+                        gun_yuku[gun] += 1
+                        yerlesen_dersler.add(uni_key)
+                        placed = True
+                        break
+
+                if not placed:
+                    raise RuntimeError(
+                        f"❌ Tercih verisi tutarsız: {uni_key}\n"
+                        f"Gün: {gun}\nSaat: {col}\n"
+                    )
 
 # ==============================
 # 5. KALAN DERSLER
@@ -139,6 +148,7 @@ MAX_DENEME = 5000
 MAX_SOFT = 2
 deneme = 0
 soft_kullanim = []
+
 
 def yerlestir(i):
     global deneme
@@ -178,7 +188,7 @@ def yerlestir(i):
         if cakisan and (not soft_mod or len(soft_kullanim) >= MAX_SOFT):
             continue
 
-        program[g][s][dl] = f"{ders} ({', '.join(siniflar)}, {ogretmen})"
+        program[g][s][dl] = f"{ders} - {ogretmen}"
         ogretmen_prog[g][s].add(ogretmen)
         sinif_prog[g][s].update(siniflar)
         saat_yuku[g][s] += 1
@@ -202,6 +212,7 @@ def yerlestir(i):
 
     return False
 
+
 # ==============================
 # 7. ÇALIŞTIR
 # ==============================
@@ -220,7 +231,7 @@ if yerlestir(0):
             for s in range(gunluk_saat)
         ])
 
-    pd.DataFrame(tablo, index=gunler, columns=saatler)\
+    pd.DataFrame(tablo, index=gunler, columns=saatler) \
         .to_excel("isletme_ders_programi.xlsx")
 
     print("✅ Excel çıktısı oluşturuldu.")
