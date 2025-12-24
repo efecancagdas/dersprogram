@@ -89,7 +89,40 @@ dersler = [
     "Introduction to Business (Örgün + İ.Ö)",
     "Hukukun Temel Kavramları (Örgün + İ.Ö.)",
     "Ticaret Hukuku (Tasfiye)",
-    "İşletmeye Giriş"
+    "İşletmeye Giriş",
+"Pazarlama Yönetimi",
+    "Örgütler ve Yönetim",
+    "Stratejik İşletme Finansı",
+    "İşlemler Yönetimi",
+    "Ticaret Hukuku",
+    "Endüstriyel Pazarlama",
+    "Tüketici Davranışları",
+    "Stratejik Pazarlama Yönetimi",
+    "Perakendecilik",
+    "Hizmet Pazarlaması",
+    "İnsan Kaynakları Yönetimi",
+    "Bilimsel Araştırma Yöntemleri ve Etik",
+    "Örgütsel Davranış",
+    "Örgütler ve Yönetim",
+    "Kurumsal Koçluk ve Mentorluk",
+    "Yönetim Atölyesi",
+    "Ağ Modelleri",
+    "Malzeme ve Stok Yönetimi",
+    "Lojistik ve Tedarik Zincirinde Güncel Konular",
+    "Tedarik Zinciri ve Lojistik İçin Bilgi Sistemleri",
+    "Dönem Projesi",
+    "Stratejik Finans Yönetimi",
+    "Finansal Muhasebe",
+    "Sermaye Piyasaları ve Menkul Kıymetler Analizi",
+    "Vadeli İşlem Piyasaları",
+    "Uluslararası Finansman",
+    "Veri Odaklı Üretim Planlama Stratejileri",
+    "Proje Yönetimi",
+    "Akıllı Karar Modelleri",
+    "Stratejik Üretim Yönetimi ve Üretimde Dijitalleşme",
+    "İş Analitiğinde Sayısal Yöntemler",
+    "Stratejik Yatırım Kararları ve Planlama",
+    "Hizmet Pazarlaması"
 ]
 
 
@@ -204,6 +237,50 @@ sinif_bilgisi = {
         "Hukukun Temel Kavramları (Örgün + İ.Ö.)",
         "Ticaret Hukuku (Tasfiye)",
         "İşletmeye Giriş"
+    ],
+    "İşletme İ.Ö. Tezsiz Yüksek Lisans Programı": [
+        "Pazarlama Yönetimi",
+        "Örgütler ve Yönetim",
+        "Stratejik İşletme Finansı",
+        "İşlemler Yönetimi",
+        "Ticaret Hukuku"
+    ],
+    "Pazarlama ve Marka Yönetimi İ.Ö. Tezsiz Yüksek Lisans Programı": [
+        "Endüstriyel Pazarlama",
+        "Tüketici Davranışları",
+        "Stratejik Pazarlama Yönetimi",
+        "Perakendecilik",
+        "Hizmet Pazarlaması"
+    ],
+    "İnsan Kaynakları Yönetimi ve Yönetim Geliştirme İ.Ö. Tezsiz Yüksek Lisans Programı": [
+        "İnsan Kaynakları Yönetimi",
+        "Bilimsel Araştırma Yöntemleri ve Etik",
+        "Örgütsel Davranış",
+        "Örgütler ve Yönetim"
+    ],
+    "Uzaktan Öğretim Lojistik Yönetimi İ.Ö. Tezsiz Yüksek Lisans Programı": [
+        "Bilimsel Araştırma Yöntemleri ve Etik",
+        "Ağ Modelleri",
+        "Malzeme ve Stok Yönetimi",
+        "Lojistik ve Tedarik Zincirinde Güncel Konular"
+    ],
+    "Muhasebe ve Finansman İ.Ö. Tezsiz Yüksek Lisans Programı": [
+        "Stratejik Finans Yönetimi",
+        "Finansal Muhasebe",
+        "Sermaye Piyasaları ve Menkul Kıymetler Analizi",
+        "Bilimsel Araştırma Yöntemleri ve Etik"
+    ],
+    "Dijital Teknolojilerle Üretim Yönetimi İ.Ö. Tezsiz Yüksek Lisans Programı": [
+        "Veri Odaklı Üretim Planlama Stratejileri",
+        "Proje Yönetimi",
+        "Akıllı Karar Modelleri",
+        "Stratejik Üretim Yönetimi ve Üretimde Dijitalleşme"
+    ],
+    "Uzaktan Öğretim İşletme Tezsiz Yüksek Lisans Programı": [
+        "Örgütler ve Yönetim",
+        "Tedarik Zinciri Yönetimi ve Lojistik",
+        "Pazarlama Yönetimi",
+        "İşlemler Yönetimi"
     ]
 }
 

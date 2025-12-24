@@ -395,7 +395,7 @@ df_kisit = pd.DataFrame({
 # -----------------------------
 # EXCEL'E YAZ (ENGINE YOK!)
 # -----------------------------
-with pd.ExcelWriter("ders_programi_kisit_formu.xlsx") as writer:
+with pd.ExcelWriter("kisit_formu.xlsx") as writer:
     df_uygunluk.to_excel(writer, sheet_name="Ogretmen_Uygunluk", index=False)
     df_ders_hoca.to_excel(writer, sheet_name="Ders_Ogretmen", index=False)
     df_ders.to_excel(writer, sheet_name="Ders_Bilgileri", index=False)

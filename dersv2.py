@@ -18,14 +18,17 @@ JOIN Dersler ON Dersler.ders_id = OgretimUyeleriDersler.ders_id
 """)
 
 ders_info = {}
-ders_ogretmen = {}
+ders_ogretmen = {}  # ders -> list of (ogretmen, sinif list)
 
 for ogretmen, ders, sinif in cursor.fetchall():
-    ders_ogretmen[ders] = ogretmen
-    ders_info[ders] = {
-        "siniflar": [s.strip() for s in str(sinif).split(",")],
-        "gun_yasaklari": []
-    }
+    if ders not in ders_ogretmen:
+        ders_ogretmen[ders] = []
+    ders_ogretmen[ders].append((ogretmen, [s.strip() for s in str(sinif).split(",")]))
+
+    if ders not in ders_info:
+        ders_info[ders] = {
+            "gun_yasaklari": []
+        }
 
 cursor.execute("SELECT derslik_adi FROM Derslikler")
 derslikler = [r[0] for r in cursor.fetchall()]
@@ -93,42 +96,47 @@ for _, row in tercih_df.iterrows():
             if ders not in ders_ogretmen:
                 raise RuntimeError(f"❌ Tercih ders DB'de yok: {ders}")
 
-            ogretmen = ders_ogretmen[ders]
-            siniflar = ders_info[ders]["siniflar"]
+            # artık ders_ogretmen[ders] bir liste
+            for ogretmen, siniflar in ders_ogretmen[ders]:
+                placed = False
+                for dl in derslikler:
+                    if all(
+                        dl not in program[gun][s] and
+                        ogretmen not in ogretmen_prog[gun][s] and
+                        uygunluk.get((ogretmen, gun, saatler[s]), 1) != 0 and
+                        all(sf not in sinif_prog[gun][s] for sf in siniflar)
+                        for s in saat_idx
+                    ):
+                        for s in saat_idx:
+                            program[gun][s][dl] = f"{ders} ({', '.join(siniflar)}, {ogretmen})"
+                            ogretmen_prog[gun][s].add(ogretmen)
+                            sinif_prog[gun][s].update(siniflar)
+                            saat_yuku[gun][s] += 1
+                        gun_yuku[gun] += 1
+                        yerlesen_dersler.add((ders, ogretmen))
+                        placed = True
+                        break
 
-            placed = False
-            for dl in derslikler:
-                if all(
-                    dl not in program[gun][s] and
-                    ogretmen not in ogretmen_prog[gun][s] and
-                    uygunluk.get((ogretmen, gun, saatler[s]), 1) != 0 and
-                    all(sf not in sinif_prog[gun][s] for sf in siniflar)
-                    for s in saat_idx
-                ):
-                    for s in saat_idx:
-                        program[gun][s][dl] = f"{ders} ({', '.join(siniflar)}, {ogretmen})"
-                        ogretmen_prog[gun][s].add(ogretmen)
-                        sinif_prog[gun][s].update(siniflar)
-                        saat_yuku[gun][s] += 1
-                    gun_yuku[gun] += 1
-                    yerlesen_dersler.add(ders)
-                    placed = True
-                    break
-
-            if not placed:
-                raise RuntimeError(
-                    f"❌ Tercih verisi tutarsız:\n"
-                    f"Ders: {ders}\nGün: {gun}\nSaat: {col}\n"
-                    f"(Muhtemel neden: hoca uygunluk formu)"
-                )
+                if not placed:
+                    raise RuntimeError(
+                        f"❌ Tercih verisi tutarsız:\n"
+                        f"Ders: {ders}\nOgretmen: {ogretmen}\nGün: {gun}\nSaat: {col}\n"
+                        f"(Muhtemel neden: hoca uygunluk formu)"
+                    )
 
 # ==============================
 # 5. KALAN DERSLER
 # ==============================
-kalan_dersler = list(set(ders_ogretmen.keys()) - yerlesen_dersler)
+kalan_dersler = []
 
+for ders in ders_ogretmen:
+    for ogretmen, siniflar in ders_ogretmen[ders]:
+        if (ders, ogretmen) not in yerlesen_dersler:
+            kalan_dersler.append((ders, ogretmen, siniflar))
+
+# zor dersleri önce yerleştirmek için sırala
 kalan_dersler.sort(
-    key=lambda d: (len(ders_info[d]["gun_yasaklari"]),),
+    key=lambda x: (len(ders_info[x[0]]["gun_yasaklari"]),),
     reverse=True
 )
 
@@ -150,9 +158,7 @@ def yerlestir(i):
     if i == len(kalan_dersler):
         return True
 
-    ders = kalan_dersler[i]
-    ogretmen = ders_ogretmen[ders]
-    siniflar = ders_info[ders]["siniflar"]
+    ders, ogretmen, siniflar = kalan_dersler[i]
 
     soft_mod = deneme > MAX_DENEME
 
